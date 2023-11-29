@@ -1,26 +1,18 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function Player() {
-  const [playerName, setPlayerName] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  function handleNameChange(event) {
-    setSubmitted(false); //bcoz name is change after every key strok
-    setPlayerName(event.target.value);
-  }
+  const inputPlayerName = useRef();
+  const [playerName, setPlayerName] = useState(null);
   function handleClick() {
-    setSubmitted(true);
+    setPlayerName(inputPlayerName.current.value);
+    inputPlayerName.current.value = "";
   }
   return (
     <section id="player">
-      {submitted ? (
-        <h2>Welcome {playerName}</h2>
-      ) : (
-        <h2>Welcome unknown entity</h2>
-      )}
-
+      <h2>Welcome {playerName ?? "unknown entity"}</h2>
+      {/* <h2>Welcome {playerName ? playerName : "unknown entity"}</h2>  we have used javascript shortcut */}
       <p>
-        <input type="text" onChange={handleNameChange} value={playerName} />
+        <input ref={inputPlayerName} type="text" />
         <button onClick={handleClick}>Set Name</button>
       </p>
     </section>
